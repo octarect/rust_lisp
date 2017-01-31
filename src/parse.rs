@@ -20,7 +20,7 @@ named!(i64_digit<Node>,
 
 named!(primary<Node>,
   alt!(
-    i64_digit | expr
+    i64_digit
   )
 );
 
@@ -47,13 +47,17 @@ named!(operator<Operator>,
   )
 );
 
+named!(arg<Node>,
+  alt!(primary | expr)
+);
+
 named!(expr1<Node>,
   chain!(
     op: operator ~
     space ~
-    nd0: primary ~
+    nd0: arg ~
     space ~
-    nd1: primary,
+    nd1: arg,
     || {
       return Node::op(op, nd0, nd1, 0)
     }
