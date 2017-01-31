@@ -53,13 +53,13 @@ named!(arg<Node>,
 
 named!(expr1<Node>,
   chain!(
+    space? ~
     op: operator ~
     space ~
-    nd0: arg ~
-    space ~
-    nd1: arg,
+    nds: separated_list!(space, arg) ~
+    space?,
     || {
-      return Node::op(op, nd0, nd1, 0)
+      return Node::call_new(op, nds, 0)
     }
   )
 );
