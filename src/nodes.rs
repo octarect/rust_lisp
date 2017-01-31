@@ -47,6 +47,13 @@ impl Node {
       args: vec![l, r],
     }
   }
+  pub fn call_new(op: Operator, args: Vec<Node>, pos: u16) -> Node {
+    Node::CallNode {
+      header: NodeHeader {lineno: pos},
+      op: op,
+      args: args,
+    }
+  }
   pub fn value(val: DataType, pos: u16) -> Node {
     Node::ValueNode {
       header: NodeHeader {lineno: pos},
