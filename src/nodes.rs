@@ -1,18 +1,22 @@
 #![allow(dead_code)]
 use types::{DataType};
 
+#[derive(Debug)]
 pub struct NodeHeader {
   pub lineno: u16,
 }
 
+#[derive(Debug)]
 pub enum Operator {
   Add,
   Sub,
   Mul,
   Div,
+  Let,
   Call(String),
 }
 
+#[derive(Debug)]
 pub enum Node {
   CallNode {
     header: NodeHeader,

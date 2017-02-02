@@ -3,7 +3,7 @@ use std::fmt;
 use std::ops::{Add, Sub, Mul, Div};
 use std::clone::Clone;
 
-#[derive(Copy)]
+#[derive(Copy, Debug)]
 pub enum DataType {
   Int(i64),
   Null,
