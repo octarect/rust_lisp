@@ -2,8 +2,8 @@
 use nom::{IResult, digit, space};
 use std::str;
 use std::str::FromStr;
-use nodes::{Node, Operator};
-use types::DataType;
+use node::{Node, Operator};
+use datatype::DataType;
 
 named!(i64_digit<Node>,
   map!(

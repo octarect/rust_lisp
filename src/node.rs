@@ -1,5 +1,5 @@
 #![allow(dead_code)]
-use types::{DataType};
+use datatype::DataType;
 
 #[derive(Debug)]
 pub struct NodeHeader {
