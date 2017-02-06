@@ -1,5 +1,6 @@
 #![allow(dead_code)]
 use datatype::DataType;
+use env::Env;
 
 #[derive(Debug)]
 pub struct NodeHeader {
@@ -27,21 +28,29 @@ pub enum Node {
     header: NodeHeader,
     value: DataType,
   },
+  IdentNode {
+    header: NodeHeader,
+    id: String,
+  }
 }
 
 impl Node {
-  pub fn eval(&self) -> DataType {
+  pub fn eval(&self, ctx: &mut Env) -> DataType {
     match *self {
       Node::CallNode {ref op, ref args, ..} => {
         match *op {
-          Operator::Add => args[0].eval() + args[1].eval(),
-          Operator::Sub => args[0].eval() - args[1].eval(),
-          Operator::Mul => args[0].eval() * args[1].eval(),
-          Operator::Div => args[0].eval() / args[1].eval(),
+          Operator::Call(ref fname) => {
+            let data = args.iter().map(|nd| nd.eval(ctx)).collect::<Vec<_>>();
+            match ctx.get(fname) {
+              DataType::Func(f) => f(ctx, data),
+              _ => panic!("{} is not function", fname),
+            }
+          },
           _ => DataType::Int(-1),
         }
       },
       Node::ValueNode {value, ..} => value,
+      Node::IdentNode {ref id, ..} => ctx.get(id)
     }
   }
   pub fn op(op: Operator, l: Node, r: Node, pos: u16) -> Node {
@@ -62,6 +71,12 @@ impl Node {
     Node::ValueNode {
       header: NodeHeader {lineno: pos},
       value: val,
+    }
+  }
+  pub fn ident_new(s: String, pos: u16) -> Node {
+    Node::IdentNode {
+      header: NodeHeader {lineno: pos},
+      id: s,
     }
   }
 }

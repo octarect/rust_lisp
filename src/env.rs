@@ -16,13 +16,14 @@ impl Env {
   pub fn local_new(p: Env) -> Env {
     Env {parent: Some(Box::new(p)), table: HashMap::new()}
   }
-  pub fn set(&mut self, k: String, v: DataType) {
+  pub fn set(&mut self, k: String, v: DataType) -> (){
     self.table.insert(k, v);
   }
-  pub fn get(&mut self, k: String) -> DataType {
-    match self.table.get(&k) {
+  pub fn get(&mut self, k: &String) -> DataType {
+    match self.table.get(k) {
       Some(&v) => v,
-      _ => panic!("Undefined variable: {}", k),
+      // _ => DataType::Str(k),
+      _ => DataType::Null,
     }
   }
 }
